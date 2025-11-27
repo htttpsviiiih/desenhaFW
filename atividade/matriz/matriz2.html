@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="game" width="800" height="600"></canvas>
+    <script>
+        const img = new Image();
+        img.src = '../sprite/spriteMatriz.png';
+        const canvas = document.getElementById('game');
+        const ctx = canvas.getContext('2d');
+        let x = 60;
+        let y = 80;
+        const frameH = 90;
+        const frameW = 101;
+        let direction = 0;
+        let frame = 0;
+        const speed = 3;
+        let key = null;
+
+        document.addEventListener('keydown', (e) => {
+            key = e.key; 
+        });
+        document.addEventListener('keyup', (e) => {
+            key = null;
+        });
+
+        function loop(){
+            if(key === 'ArrowUp'){
+                direction = 2;
+                y -= speed;
+            } 
+
+            if(key === 'ArrowDown'){
+                direction = 0;
+                y += speed;
+            }
+
+            if(key === 'ArrowLeft'){
+                direction = 1;
+                x -= speed;
+            }
+
+            if(key === 'ArrowRight'){
+                direction = 2;
+                x += speed;
+            }
+
+            if (key) {
+                frame = (frame + 1) % 9;
+            }else {
+                frame = 0;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.drawImage(
+                img,
+                frame * frameW,
+                direction * frameH,
+                frameW,
+                frameH,
+                x,
+                y,
+                frameW,
+                frameH
+            );
+            requestAnimationFrame(loop);
+        }
+
+        img.onload = loop;
+
+    </script>
+</body>
+</html>
